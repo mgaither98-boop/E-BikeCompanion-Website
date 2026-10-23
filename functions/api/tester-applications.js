@@ -112,7 +112,7 @@ export async function onRequestPost({ request, env }) {
 
     if (!upstream.ok) {
       // Do not relay GitHub response bodies; they can contain internal details.
-      return json({ ok: false, error: "Application service temporarily unavailable. Please try again later." }, 502);
+      return json({ ok: false, error: "GitHub rejected the application (HTTP " + upstream.status + "). Check the Cloudflare secret, token repository access, and Issues: write permission." }, 502);
     }
 
     return json({ ok: true }, 202);
