@@ -107,7 +107,7 @@ export async function onRequestPost({ request, env }) {
         "x-github-api-version": "2022-11-28",
         "user-agent": "E-Bike-Companion-Tester-Applications",
       },
-      body: JSON.stringify({ title, body, labels: ["tester-pending"] }),
+      body: JSON.stringify({ title, body }),
     });
 
     if (!upstream.ok) {
