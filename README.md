@@ -27,7 +27,8 @@ In the Pages project's **Custom domains**, add `ebike.magservers.org`. Follow th
 ## Required before public launch
 - [ ] Add and test the real Google Play listing URL on the Releases page and homepage.
 - [ ] Add the actual app version/build, minimum Android version and supported Android versions.
-- [ ] Connect a public submission endpoint for bug reports and compatibility contributions. The current website is static and the app source repository is private; the contribution page is guidance only and does not send submissions.
+- [ ] Configure the private tester intake by adding the `GITHUB_TESTER_TOKEN` secret in Cloudflare Pages, then test that applications appear only as issues in the private app repository. See `automation/PRIVATE_GITHUB_TESTER_SETUP.md`.
+- [ ] Connect a public submission endpoint for bug reports and compatibility contributions. The public community contribution page is guidance only and does not automatically send submissions.
 - [ ] Add and test a monitored support/privacy email or another real contact route.
 - [ ] Verify the privacy policy against the exact release APK, all SDKs, permissions and network behaviour; get appropriate legal review.
 - [ ] Update the policy effective date after review and remove all draft/publisher checklist notices only after the checklist is completed.
@@ -38,7 +39,7 @@ In the Pages project's **Custom domains**, add `ebike.magservers.org`. Follow th
 - [ ] Verify the custom domain, HTTPS and Cloudflare Pages production deployment.
 
 ## Important limitations
-This site intentionally does not claim that the app is available in Google Play until the official listing is provided. No public submission form or backend is connected yet. Do not present the compatibility directory as a verified compatibility database until entries have been reviewed and documented.
+This site intentionally does not claim that the app is available in Google Play until the official listing is provided. The tester form uses a server-side Cloudflare Pages Function and requires the `GITHUB_TESTER_TOKEN` secret before it can accept applications. Public bug-report and compatibility forms are not connected. Do not present the compatibility directory as a verified compatibility database until entries have been reviewed and documented.
 
 ## Design
 The site uses the app's graphite, evergreen, Vela Mint and electric-blue palette, official launcher icon and genuine app screenshots. It is a static site with responsive layouts and reduced-motion support.
