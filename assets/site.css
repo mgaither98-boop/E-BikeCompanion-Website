@@ -39,3 +39,17 @@
 @media(max-width:900px){.app-shot-frame{justify-self:center;width:min(100%,410px)}.screenshot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.screenshot-image img{height:330px}}
 @media(max-width:600px){.app-shot-frame{padding:9px;border-radius:24px}.hero-shot>img{max-height:590px}.screenshots-section{padding-top:30px;padding-bottom:65px}.screenshot-grid{grid-template-columns:1fr;gap:15px}.screenshot-card{display:grid;grid-template-columns:minmax(0,42%) minmax(0,1fr);align-items:stretch;border-radius:22px}.screenshot-image{padding:8px 0 8px 8px;display:flex;align-items:center}.screenshot-image img{height:225px;width:100%;object-fit:cover;object-position:top center;border-radius:14px}.screenshot-copy{padding:18px 13px;align-self:center}.screenshot-copy h3{font-size:15px}.screenshot-copy p{font-size:11px}.screenshot-copy .tag{font-size:8px}.image-open{display:none}}
 @media(prefers-reduced-motion:reduce){.screenshot-card,.image-open{transition:none}}
+
+/* Compact screenshot presentation: let the app UI speak for itself */
+.app-shot-frame{width:min(100%,330px);padding:7px;border-radius:23px;box-shadow:0 18px 50px #0005}
+.hero-shot>img{max-height:570px;border-radius:16px}
+.shot-window-bar,.shot-caption,.image-open{display:none!important}
+.screenshot-grid{gap:14px}
+.screenshot-card{border-radius:21px}
+.screenshot-image{padding:9px 9px 0}
+.screenshot-image img{height:290px;border-radius:13px 13px 4px 4px}
+.screenshot-copy{padding:14px 16px 17px}
+.screenshot-copy h3{font-size:15px;margin:8px 0 6px}
+.screenshot-copy p{font-size:11px;line-height:1.6}
+@media(max-width:900px){.app-shot-frame{width:min(100%,320px)}.screenshot-image img{height:280px}}
+@media(max-width:600px){.app-shot-frame{width:min(100%,270px);padding:6px;border-radius:19px}.hero-shot>img{max-height:500px;border-radius:13px}.screenshot-grid{gap:12px}.screenshot-card{grid-template-columns:minmax(0,35%) minmax(0,1fr);border-radius:17px}.screenshot-image{padding:7px 0 7px 7px}.screenshot-image img{height:180px;object-fit:cover;object-position:top center;border-radius:11px}.screenshot-copy{padding:12px 10px}.screenshot-copy h3{font-size:13px}.screenshot-copy p{font-size:10px}.screenshot-copy .tag{font-size:7px}}
