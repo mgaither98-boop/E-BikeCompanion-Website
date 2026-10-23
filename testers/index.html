@@ -68,9 +68,10 @@ form.addEventListener('submit',async function(event){
  submit.disabled=true;status.textContent='Submitting your application securely…';
  try{
   const response=await fetch(APPLICATION_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-  if(!response.ok)throw new Error('Submission failed');
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.error||('Submission failed (HTTP '+response.status+').'));
   form.reset();status.textContent='Application received. We will review it and email you if you are accepted. Please check your spam folder too.';
- }catch(error){status.textContent='We could not submit your application. No success has been recorded. Please try again later or contact support@ebike.magservers.org.';}
+ }catch(error){status.textContent='We could not submit your application. '+(error&&error.message?error.message:'Please try again later.')+' No success has been recorded.';}
  finally{submit.disabled=false;}
 });
 })();
