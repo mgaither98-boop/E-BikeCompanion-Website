@@ -65,7 +65,7 @@ export async function onRequestPost({ request, env }) {
     ? [...new Set(data.testAreas.filter(v => typeof v === "string" && ALLOWED_AREAS.has(v)))]
     : [];
 
-  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ ok: false, error: "Enter a valid email address." }, 400);
   }
   if (!android) return json({ ok: false, error: "Android device and version are required." }, 400);
