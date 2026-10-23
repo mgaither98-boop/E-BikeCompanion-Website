@@ -48,12 +48,12 @@ const form=document.getElementById('tester-application-form');
 const status=document.getElementById('tester-status');
 // Configure this with the production n8n Webhook URL after importing and testing
 // the private application workflow. Never put API keys or credentials in this page.
-const N8N_TESTER_WEBHOOK_URL='';
+const APPLICATION_ENDPOINT='/api/tester-applications';
 form.addEventListener('submit',async function(event){
  event.preventDefault();
  if(!form.reportValidity())return;
  if(!document.getElementById('tester-consent').checked){status.textContent='Please confirm the privacy and contact consent before continuing.';return;}
- if(!N8N_TESTER_WEBHOOK_URL){status.textContent='Private applications are not live yet. Please check back soon; no details have been sent or saved.';return;}
+ if(!APPLICATION_ENDPOINT){status.textContent='Private applications are not configured yet; no details have been sent or saved.';return;}
  const submit=form.querySelector('button[type="submit"]');
  const payload={
   name:document.getElementById('tester-name').value.trim(),
@@ -67,7 +67,7 @@ form.addEventListener('submit',async function(event){
  };
  submit.disabled=true;status.textContent='Submitting your application securely…';
  try{
-  const response=await fetch(N8N_TESTER_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const response=await fetch(APPLICATION_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
   if(!response.ok)throw new Error('Submission failed');
   form.reset();status.textContent='Application received. We will review it and email you if you are accepted. Please check your spam folder too.';
  }catch(error){status.textContent='We could not submit your application. No success has been recorded. Please try again later or contact support@ebike.magservers.org.';}
@@ -82,7 +82,7 @@ form.addEventListener('submit',async function(event){
 <p><a class="button button-primary" href="https://github.com/mgaither98-boop/E-BikeCompanion-Community" target="_blank" rel="noopener noreferrer">Visit public community ↗</a> <a class="button button-quiet" href="/contribute/">Contribution guide</a></p>
 <h2>Privacy and safety come first</h2>
 <ul><li>Do not share GPS routes, home/work locations, serial numbers, credentials, tokens or unredacted screenshots in public reports.</li><li>Inspect any diagnostic export before sharing. Reports should contain only information needed to investigate the issue.</li><li>Participation is voluntary. Don't perform research or troubleshoot while riding, and never rely on experimental features for safety-critical decisions.</li><li>Compatibility submissions are evidence for review, not an automatic guarantee that a bike or feature is supported.</li></ul>
-<div class="callout"><strong>Important:</strong> Applications are not yet live until the private n8n webhook is configured and tested. The opt-in link will be emailed only to approved testers; it will not be exposed on this public page.</div>
+<div class="callout"><strong>Important:</strong> Applications will become live only after the private n8n webhook is configured in Cloudflare Pages and tested. The opt-in link will be emailed only to approved testers; it will not be exposed on this public page.</div>
 </section></main>
 <footer class="site-footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="/"><span class="brand-mark"><img src="/assets/ebike-companion-icon.svg" alt="" width="42" height="42"></span><span><strong>E-Bike Companion</strong><small>YOUR RIDE. YOUR DATA.</small></span></a><div class="footer-links"><a href="/privacy/">Privacy</a><a href="/support/">Support</a><a href="/contribute/">Contribute</a><a href="/compatibility/">Compatibility</a></div><p class="copyright">© 2026 E-Bike Companion. Independent companion software; not affiliated with bike manufacturers.</p></div></footer>
 </body></html>
