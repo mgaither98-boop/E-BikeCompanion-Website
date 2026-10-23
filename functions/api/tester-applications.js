@@ -1,11 +1,14 @@
 /**
- * Cloudflare Pages Function: private tester application proxy.
+ * Cloudflare Pages Function: private tester application inbox.
  *
- * Required Pages environment variable:
- *   N8N_TESTER_WEBHOOK_URL = the production n8n webhook URL
+ * Required Cloudflare Pages secret:
+ *   GITHUB_TESTER_TOKEN = fine-grained GitHub token with Issues read/write
+ *     access ONLY to mgaither98-boop/E-BikeCompanion (private repository).
  *
- * Do not put the webhook URL or any credential in browser JavaScript.
+ * The token must never be exposed to browser JavaScript or committed to Git.
+ * Applications are created as issues in the private app repository.
  */
+const REPOSITORY = "mgaither98-boop/E-BikeCompanion";
 const ALLOWED_AREAS = new Set([
   "General app testing",
   "Bluetooth and bike compatibility",
@@ -31,8 +34,8 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: "Origin not allowed." }, 403);
   }
 
-  if (!env.N8N_TESTER_WEBHOOK_URL) {
-    return json({ ok: false, error: "Tester applications are not configured yet." }, 503);
+  if (!env.GITHUB_TESTER_TOKEN) {
+    return json({ ok: false, error: "Private application service is not configured yet." }, 503);
   }
 
   const contentType = request.headers.get("Content-Type") || "";
@@ -62,32 +65,59 @@ export async function onRequestPost({ request, env }) {
     ? [...new Set(data.testAreas.filter(v => typeof v === "string" && ALLOWED_AREAS.has(v)))]
     : [];
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
     return json({ ok: false, error: "Enter a valid email address." }, 400);
   }
   if (!android) return json({ ok: false, error: "Android device and version are required." }, 400);
   if (data.consent !== true) return json({ ok: false, error: "Consent is required." }, 400);
 
-  const payload = {
-    name, email, android, bike, testAreas, notes,
-    consent: true,
-    source: "ebike.magservers.org/testers",
-    receivedAt: new Date().toISOString(),
-  };
+  const receivedAt = new Date().toISOString();
+  const title = `Tester application — ${name || "Unnamed applicant"}`.slice(0, 180);
+  const body = [
+    "## Private tester application",
+    "",
+    "> This issue contains personal information. Keep the repository private. Do not transfer this issue or its contents to the public community repository.",
+    "",
+    `- **Received:** ${receivedAt}`,
+    `- **Preferred name/handle:** ${name || "Not provided"}`,
+    `- **Email:** ${email}`,
+    `- **Android device/version:** ${android}`,
+    `- **Bike model:** ${bike || "Not provided"}`,
+    `- **Testing interests:** ${testAreas.length ? testAreas.join(", ") : "Not specified"}`,
+    `- **Consent:** Confirmed on submission`,
+    "",
+    "### Additional notes",
+    notes || "None provided",
+    "",
+    "### Maintainer review",
+    "- [ ] Review application",
+    "- [ ] Mark accepted or declined",
+    "- [ ] If accepted, send Google Play testing instructions privately by email",
+    "",
+    "Suggested maintainer labels: `tester-pending`, `tester-approved`, `tester-rejected`.",
+  ].join("\n");
 
   try {
-    const upstream = await fetch(env.N8N_TESTER_WEBHOOK_URL, {
+    const upstream = await fetch(`https://api.github.com/repos/${REPOSITORY}/issues`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
+      headers: {
+        "accept": "application/vnd.github+json",
+        "authorization": `Bearer ${env.GITHUB_TESTER_TOKEN}`,
+        "content-type": "application/json",
+        "x-github-api-version": "2022-11-28",
+        "user-agent": "E-Bike-Companion-Tester-Applications",
+      },
+      body: JSON.stringify({ title, body, labels: ["tester-pending"] }),
     });
+
     if (!upstream.ok) {
-      // Do not relay upstream response bodies; they may contain internal details.
-      return json({ ok: false, error: "Application service temporarily unavailable." }, 502);
+      // Do not relay GitHub response bodies; they can contain internal details.
+      return json({ ok: false, error: "Application service temporarily unavailable. Please try again later." }, 502);
     }
+
     return json({ ok: true }, 202);
   } catch {
-    return json({ ok: false, error: "Application service temporarily unavailable." }, 502);
+    return json({ ok: false, error: "Application service temporarily unavailable. Please try again later." }, 502);
   }
 }
 
