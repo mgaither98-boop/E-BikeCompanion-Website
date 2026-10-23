@@ -20,6 +20,42 @@
 <article class="support-card"><div class="feature-icon">🗺️</div><h3>Maps and ride tools</h3><p>Try importing supported MBTiles maps and GPX routes, and test ride recording while stationary or in a safe, controlled situation.</p></article>
 <article class="support-card"><div class="feature-icon">🔬</div><h3>Read-only research</h3><p>Help evaluate Bluetooth discovery and diagnostic clarity. Experimental drivers are intended to remain read-only; don't test while riding.</p></article>
 </div>
+<h2 style="margin-top:44px">Join the tester list</h2>
+<p>Tell us a little about yourself and what you can test. Choose whether to prepare a public GitHub issue or an email to the tester contact. Nothing is sent automatically from this website.</p>
+<form id="tester-signup-form" class="support-card" style="display:grid;gap:18px" onsubmit="return false">
+<div><label for="tester-name"><strong>Name or preferred handle</strong></label><input id="tester-name" maxlength="80" placeholder="Optional" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:12px;border-radius:10px;background:var(--surface,#17221e);color:inherit;border:1px solid #39534a"></div>
+<div><label for="tester-email"><strong>Contact email</strong> <span class="notice">(optional)</span></label><input id="tester-email" type="email" maxlength="160" placeholder="Only include if you want us to contact you" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:12px;border-radius:10px;background:var(--surface,#17221e);color:inherit;border:1px solid #39534a"></div>
+<div class="support-grid">
+<div><label for="tester-android"><strong>Android device / version</strong></label><input id="tester-android" maxlength="120" placeholder="e.g. Samsung Galaxy, Android 16" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:12px;border-radius:10px;background:var(--surface,#17221e);color:inherit;border:1px solid #39534a"></div>
+<div><label for="tester-bike"><strong>Bike model (if any)</strong></label><input id="tester-bike" maxlength="160" placeholder="e.g. Fiido M1 Pro 2026" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:12px;border-radius:10px;background:var(--surface,#17221e);color:inherit;border:1px solid #39534a"></div>
+</div>
+<fieldset style="border:1px solid #39534a;border-radius:10px;padding:14px"><legend><strong>What can you test?</strong></legend>
+<label style="display:flex;gap:10px;margin:10px 0"><input type="checkbox" name="test-area" value="General app testing">General app testing</label>
+<label style="display:flex;gap:10px;margin:10px 0"><input type="checkbox" name="test-area" value="Bluetooth and bike compatibility">Bluetooth and bike compatibility</label>
+<label style="display:flex;gap:10px;margin:10px 0"><input type="checkbox" name="test-area" value="Offline maps and GPX">Offline maps and GPX</label>
+<label style="display:flex;gap:10px;margin:10px 0"><input type="checkbox" name="test-area" value="Read-only research and diagnostics">Read-only research and diagnostics</label>
+</fieldset>
+<div><label for="tester-notes"><strong>Anything else we should know?</strong></label><textarea id="tester-notes" maxlength="2000" rows="4" placeholder="Optional: experience, other devices, or availability…" style="display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:12px;border-radius:10px;background:var(--surface,#17221e);color:inherit;border:1px solid #39534a"></textarea></div>
+<label style="display:flex;gap:10px;align-items:flex-start"><input id="tester-consent" type="checkbox" required style="margin-top:5px"><span>I understand this form opens a draft for me to review. I will not include GPS routes, serial numbers, credentials or other sensitive information. I understand GitHub submissions are public.</span></label>
+<p class="notice">This is not yet an automated mailing list. GitHub reports are public; email opens your own email app and must be sent by you. Do not provide an email address if you do not want it included in the draft.</p>
+<div class="hero-actions"><button class="button button-primary" type="button" id="tester-github">Register interest via GitHub ↗</button><button class="button button-quiet" type="button" id="tester-email">Register interest by email ↗</button></div>
+<p id="tester-status" class="notice" role="status" aria-live="polite"></p>
+</form>
+<script>
+(function(){
+const form=document.getElementById('tester-signup-form'),status=document.getElementById('tester-status');
+function collect(){
+ if(!document.getElementById('tester-consent').checked){status.textContent='Please confirm the privacy note before continuing.';return null;}
+ const name=document.getElementById('tester-name').value.trim(),email=document.getElementById('tester-email').value.trim();
+ if(email&&!document.getElementById('tester-email').checkValidity()){status.textContent='Please check the email address or leave it blank.';return null;}
+ const areas=Array.from(form.querySelectorAll('input[name="test-area"]:checked')).map(x=>x.value);
+ const lines=[['Preferred name',name||'Not provided'],['Contact email',email||'Not provided'],['Android device / version',document.getElementById('tester-android').value.trim()||'Not provided'],['Bike model',document.getElementById('tester-bike').value.trim()||'Not provided'],['Test interests',areas.join(', ')||'Not selected'],['Additional notes',document.getElementById('tester-notes').value.trim()||'None']];
+ return {title:'Tester interest'+(name?' — '+name:''),body:lines.map(x=>x[0]+':\n'+x[1]).join('\n\n')+'\n\nSubmitted via E-Bike Companion tester recruitment page.\nNote: Google Play test access is not available until the test track is ready.'};
+}
+document.getElementById('tester-github').addEventListener('click',function(){const d=collect();if(!d)return;const url='https://github.com/mgaither98-boop/E-BikeCompanion-Community/issues/new?title='+encodeURIComponent(d.title)+'&body='+encodeURIComponent(d.body);status.textContent='Opening GitHub. Review the draft and submit it when ready.';window.open(url,'_blank','noopener,noreferrer');});
+document.getElementById('tester-email').addEventListener('click',function(){const d=collect();if(!d)return;status.textContent='Opening your email app. Review the draft and press Send there.';window.location.href='mailto:support@ebike.magservers.org?subject='+encodeURIComponent('[E-Bike Companion] Tester interest')+'&body='+encodeURIComponent(d.body);});
+})();
+</script>
 <h2 style="margin-top:44px">Who we're looking for</h2>
 <ul><li>Android users willing to install a test build and try a short checklist.</li><li>E-bike owners, especially people willing to share their bike model and hardware details.</li><li>Testers who can describe problems clearly and retest fixes when asked.</li></ul>
 <h2>How to get involved</h2>
