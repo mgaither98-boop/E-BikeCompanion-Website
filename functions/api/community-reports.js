@@ -61,9 +61,10 @@ export async function onRequestPost({ request, env }) {
   const modelYear = clean(data.modelYear, 80) || "Not provided";
   const displayController = clean(data.displayController, 200) || "Not provided";
   const evidence = clean(data.evidence, 4000) || "Not provided";
+  const email = clean(data.email, 254).toLowerCase();
   const consent = data.publicConsent === true;
 
-  if (!TYPES.has(type)) return json({ ok: false, error: "Choose a valid report type." }, 400);
+  if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return json({ ok: false, error: "Please enter a valid email address or leave it blank." }, 400);\n  if (!TYPES.has(type)) return json({ ok: false, error: "Choose a valid report type." }, 400);
   if (title.length < 4 || details.length < 10) return json({ ok: false, error: "Please provide a short summary and at least 10 characters of detail." }, 400);
   if (!consent) return json({ ok: false, error: "Please confirm that this report can be published publicly." }, 400);
 
@@ -117,7 +118,20 @@ export async function onRequestPost({ request, env }) {
       return json({ ok: false, error: "The community repository could not accept the report just now. Please try again later or use the email contact on the support page." }, 502);
     }
     const issue = await upstream.json();
-    return json({ ok: true, issueUrl: issue.html_url }, 201);
+    // Store contact details only in private D1, never in the public issue body.
+    // If D1 fails, the public report still succeeds; do not claim contact storage succeeded.
+    let contactStored = false;
+    if (email && env.CONTACTS_DB) {
+      try {
+        await env.CONTACTS_DB.prepare(
+          "INSERT INTO report_contacts (issue_number, email) VALUES (?, ?)"
+        ).bind(issue.number, email).run();
+        contactStored = true;
+      } catch {
+        // Keep the public submission successful without exposing the email.
+      }
+    }
+    return json({ ok: true, issueUrl: issue.html_url, contactStored }, 201);
   } catch {
     return json({ ok: false, error: "The submission service is temporarily unavailable. Please try again later or use the email contact on the support page." }, 502);
   }
