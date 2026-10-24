@@ -64,7 +64,7 @@ export async function onRequestPost({ request, env }) {
   const email = clean(data.email, 254).toLowerCase();
   const consent = data.publicConsent === true;
 
-  if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return json({ ok: false, error: "Please enter a valid email address or leave it blank." }, 400);\n  if (!TYPES.has(type)) return json({ ok: false, error: "Choose a valid report type." }, 400);
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ ok: false, error: "Please enter a valid email address or leave it blank." }, 400);\n  if (!TYPES.has(type)) return json({ ok: false, error: "Choose a valid report type." }, 400);
   if (title.length < 4 || details.length < 10) return json({ ok: false, error: "Please provide a short summary and at least 10 characters of detail." }, 400);
   if (!consent) return json({ ok: false, error: "Please confirm that this report can be published publicly." }, 400);
 
