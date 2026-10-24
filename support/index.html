@@ -31,7 +31,7 @@
   'compatibility-evidence-field':el('compatibility-evidence-field'),
   'details-field':el('details-field')
  };
- function show(id,visible){const node=sections[id];if(node)node.hidden=!visible;}
+ function show(id,visible){const node=sections[id];if(node){node.hidden=!visible;node.style.display=visible?'':'none';}}
  function updateForm(){
   const type=typeSelect.value,privacy=type==='Privacy enquiry',compat=type==='Compatibility report',bug=type==='Bug report';
   show('summary-field',!privacy);show('app-details-fields',bug||compat);show('bike-model-field',compat||bug);show('model-year-field',compat);show('display-controller-field',compat);show('compatibility-evidence-field',compat);show('details-field',!privacy);
@@ -65,6 +65,7 @@
   status.textContent='Opening your email app with a draft. Review it and press Send yourself.';
   window.location.href='mailto:'+recipient+'?subject='+encodeURIComponent('[E-Bike Companion] '+d.type+': '+(d.title||'Private enquiry'))+'&body='+encodeURIComponent(body);
  });
+ const requestedType=new URLSearchParams(window.location.search).get('type');if(requestedType==='bug')typeSelect.value='Bug report';else if(requestedType==='compatibility')typeSelect.value='Compatibility report';else if(requestedType==='support')typeSelect.value='General support';
  updateForm();
 })();
 </script>
