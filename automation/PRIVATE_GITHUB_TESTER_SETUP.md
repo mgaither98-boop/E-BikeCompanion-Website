@@ -38,8 +38,40 @@ Do not advertise the form as working until this end-to-end test succeeds.
 - Open Issues in the private app repository.
 - Review each application manually.
 - Optionally create labels `tester-pending`, `tester-approved` and `tester-rejected` to organise applications.
-- If accepted, email the tester from your chosen contact address with the Google Play testing instructions and opt-in link. Keep the invitation link out of public pages and public repositories.
+- If accepted, send the tester the email below from your chosen contact address. The form **does not send emails automatically**; it creates a private GitHub issue for manual review.
+- Keep the Google Play invitation link and promo codes out of public pages and public repositories.
 - Close or label rejected applications without publishing personal details.
+
+### Accepted tester email template
+
+**Subject:** E-Bike Companion closed testing — next steps
+
+Hi [Tester name],
+
+Thanks for volunteering to test E-Bike Companion. Your application has been accepted.
+
+Please join the closed test using this Google Play opt-in link:
+
+[PASTE YOUR CLOSED-TEST OPT-IN LINK HERE]
+
+Because E-Bike Companion is a paid app, please contact **support@ebike.magservers.org** to request a complimentary Google Play promo code before installing. In your email, include the Google account email address you use for Google Play so we can help make sure you redeem the code on the correct account. Do not send us your password or any payment details.
+
+**How to redeem your promo code**
+
+1. Open the Google Play Store on your Android device.
+2. Tap your profile picture in the top-right corner.
+3. Select **Payments & subscriptions → Redeem code**. If that option is not shown, visit [play.google.com/redeem](https://play.google.com/redeem) while signed in to the same Google account.
+4. Enter the promo code we send you and follow the on-screen instructions.
+5. Make sure you are using that same Google account, open the E-Bike Companion Play Store listing from the closed-test link, and install the app.
+
+Please accept the closed-test invitation and remain opted in for the required testing period. After installing, reply to let us know you're set up. Feedback can be sent through the channels provided with the test.
+
+Thanks for helping improve E-Bike Companion!
+
+E-Bike Companion Support  
+support@ebike.magservers.org
+
+**Maintainer reminder:** Generate and send each promo code individually through Play Console. Do not promise that a code has been issued until you have actually created one. Promo-code availability and redemption can depend on Google Play's current promotion rules.
 
 ## Privacy and limitations
 
