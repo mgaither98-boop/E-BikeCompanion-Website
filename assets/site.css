@@ -88,3 +88,6 @@
 .compat-table a{color:var(--mint);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .compat-status{display:inline-block;padding:5px 9px;border:1px solid #69dcc544;border-radius:99px;background:#69dcc512;color:#c6f8eb;font-size:10px;font-weight:700;line-height:1.5}
 @media(max-width:600px){.compat-table-wrap{border-radius:15px}.compat-table{font-size:11px}.compat-table th,.compat-table td{padding:12px}}
+
+/* Keep primary CTA text readable when nested in support cards. */
+.support-card a.button-primary,.support-card a.button-primary:visited{color:#09201a}
