@@ -92,7 +92,7 @@ export async function onRequestPost({ request, env }) {
     "### Maintainer review",
     "- [ ] Review application",
     "- [ ] Mark accepted or declined",
-    "- [ ] If accepted, send Google Play testing instructions privately by email",
+    "- [ ] If accepted, send the accepted-tester email template from automation/PRIVATE_GITHUB_TESTER_SETUP.md, including the closed-test opt-in link and instructions to request/redeem a promo code from support@ebike.magservers.org",
     "",
     "Suggested maintainer labels: `tester-pending`, `tester-approved`, `tester-rejected`.",
   ].join("\n");
