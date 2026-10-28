@@ -1,0 +1,10 @@
+# Revalidate HTML pages so updated content is picked up promptly
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/guides/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Cache static assets for one day; stale copies may be refreshed in the background
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

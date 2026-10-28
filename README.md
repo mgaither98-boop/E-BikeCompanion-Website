@@ -45,3 +45,7 @@ This site intentionally does not claim that the app is available in Google Play 
 The site uses the app's graphite, evergreen, Vela Mint and electric-blue palette, official launcher icon and genuine app screenshots. It is a static site with responsive layouts and reduced-motion support.
 
 The privacy page is a draft for publisher review, not legal advice. Check all statements against the exact release build before submitting it to Google Play.
+
+
+## User guide
+The user guide lives under `/guides/` and uses the existing static HTML/CSS and Cloudflare Pages deployment. The landing page includes client-side search over published guide titles and summaries; search queries stay in the browser. When adding a guide, use the existing site header/footer, accessible headings, responsive styles, descriptive metadata, and links back to the guide index. Keep claims aligned with the released app and clearly distinguish verified capabilities from experimental or controller-dependent behaviour. Test all guide routes and search at mobile and desktop sizes before merging.
